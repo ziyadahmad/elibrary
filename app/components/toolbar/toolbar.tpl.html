@@ -1,0 +1,52 @@
+<div layout="column" ng-cloak="">
+    <section layout="row" flex="">
+        <md-sidenav  class="md-sidenav-left md-whiteframe-z3" md-component-id="left">
+            <md-toolbar  layout="row">                
+                <div class="md-toolbar-tools" md-colors="::{background: 'default-blue-grey'}">
+                    <h2>
+                        <span>eLibrary</span>
+                    </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" aria-label="Close Side Panel" ng-click="toolbar.openLeftMenu()">
+                        <md-tooltip>Close side panel</md-tooltip>
+                        <md-icon class="material-icons">&#xE5CD;</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <nav>
+                <md-list class="text-left">
+                    <md-list-item  ng-click="toolbar.openLeftMenu()" ui-sref="dashboard">
+                        <md-icon class="material-icons">&#xE871;</md-icon>
+                        <p>Home</p>
+                    </md-list-item>
+
+                    <md-subheader class="md-no-sticky">Admin</md-subheader>                    
+
+                    <md-list-item ng-click="toolbar.openLeftMenu()">
+                        <md-icon class="md-default-theme" class="material-icons">&#xE8B9;</md-icon>
+                        <p>Settings</p>
+                    </md-list-item>
+
+                </md-list>
+            </nav>
+        </md-sidenav>
+        
+
+        <md-content flex class="md-whiteframe-z1">
+            <md-toolbar md-colors="::{background: 'default-blue-grey-800'}">
+                <div class="md-toolbar-tools">
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="toolbar.openLeftMenu()">
+                        <md-icon><i class="material-icons">menu</i></md-icon>
+                    </md-button>
+                    <h2>
+                        <span><a aria-label="Title" ui-sref="home"> eLibrary</a></span>
+                    </h2>
+
+                    <span flex></span>
+                    <md-button ui-sref="login" aria-label="Login" ng-hide="IsAuthenticated">Login</md-button>                                        
+                    <md-button aria-label="Logout" ng-click="toolbar.logout()" ng-show="IsAuthenticated">Logout</md-button>                    
+                </div>
+            </md-toolbar>
+        </md-content>
+    </section>
+</div>

@@ -1,0 +1,55 @@
+<div layout="column" layout-align="center center">
+    <md-card layout-padding layout-margin>
+        <h4>Register</h4>
+        <form name="registerForm" ng-submit="registerUser()">
+            <div layout="row">
+                <md-input-container class="md-block">
+                    <label>UserName</label>
+                    <input required md-no-asterisk name="username" ng-model="formData.username">
+                    <div ng-messages="registerForm.username.$error">
+                        <div ng-message="required">Username is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Password</label>
+                    <input required md-no-asterisk name="password" ng-model="formData.password">
+                    <div ng-messages="registerForm.password.$error">
+                        <div ng-message="required">Password is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="md-block">
+                    <label>First Name</label>
+                    <input required md-no-asterisk name="fname" ng-model="formData.fname">
+                    <div ng-messages="registerForm.fname.$error">
+                        <div ng-message="required">Password is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Last Name</label>
+                    <input required md-no-asterisk name="lname" ng-model="formData.lname">
+                    <div ng-messages="registerForm.lname.$error">
+                        <div ng-message="required">Password is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <md-input-container class="md-block">
+                <label>E-Mail</label>
+                <input required md-no-asterisk name="email" ng-model="formData.email">
+                <div ng-messages="registerForm.email.$error">
+                    <div ng-message="required">Password is required.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Phone</label>
+                <input required md-no-asterisk name="phone" ng-model="formData.phone">
+                <div ng-messages="registerForm.phone.$error">
+                    <div ng-message="required">Password is required.</div>
+                </div>
+            </md-input-container>
+            <md-button type="submit" class="md-raised md-primary">Register</md-button>
+            <md-button ui-sref="login" class="md-warn">Back</md-button>
+        </form>
+    </md-card>
+</div>
