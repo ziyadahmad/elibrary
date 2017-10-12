@@ -24,6 +24,19 @@ nano.db.get('elibrary', function (err, body) {
     }
 });
 
+/*global emit*/
+ db.insert(
+  { "views": 
+    { "vw_users": 
+      { "map": function(doc) { 
+          emit(doc._id,[doc.username, doc.password] ); 
+        } 
+      } 
+    }
+  }, '_design/designUsers', function (error, response) {
+    console.log("yay");
+  });
+
 app.get('/', function (req, res) {
     res.sendFile('index.html');
 });
@@ -70,8 +83,9 @@ app.post('/api/registeruser', function (req, res) {
                     res.end(JSON.stringify(response));
                     return;
                 }
-
-                var userID = data.username + "-" + pad(body.rows.length + 1, 5);
+            }
+            
+            var userID = data.username + "-" + pad(body.rows.length + 1, 5);
 
                 db.insert(data, userID, function (err, body) {
                     if (!err && body.ok) {
@@ -82,7 +96,6 @@ app.post('/api/registeruser', function (req, res) {
 
                     res.end(JSON.stringify(response));
                 });
-            }
         }
     });
 });
