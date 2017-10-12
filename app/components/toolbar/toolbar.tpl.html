@@ -1,6 +1,6 @@
 <div layout="column" ng-cloak="">
     <section layout="row" flex="">
-        <md-sidenav  class="md-sidenav-left md-whiteframe-z3" md-component-id="left">
+        <md-sidenav  class="md-sidenav-left md-whiteframe-z3" md-component-id="left" style="width:200px">
             <md-toolbar  layout="row">                
                 <div class="md-toolbar-tools" md-colors="::{background: 'default-blue-grey'}">
                     <h2>
@@ -22,7 +22,7 @@
 
                     <md-subheader class="md-no-sticky">Admin</md-subheader>                    
 
-                    <md-list-item ng-click="toolbar.openLeftMenu()">
+                    <md-list-item ng-click="toolbar.openLeftMenu()" ui-sref="settings">
                         <md-icon class="md-default-theme" class="material-icons">&#xE8B9;</md-icon>
                         <p>Settings</p>
                     </md-list-item>

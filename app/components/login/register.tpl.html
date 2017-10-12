@@ -1,18 +1,18 @@
 <div layout="column" layout-align="center center">
     <md-card layout-padding layout-margin>
         <h4>Register</h4>
-        <form name="registerForm" ng-submit="registerUser()">
+        <form name="registerForm" ng-submit="registerUser()" autocomplete="off">
             <div layout="row">
                 <md-input-container class="md-block">
                     <label>UserName</label>
-                    <input required md-no-asterisk name="username" ng-model="formData.username">
+                    <input required md-no-asterisk name="username" ng-model="formData.username" autocomplete="off" >
                     <div ng-messages="registerForm.username.$error">
                         <div ng-message="required">Username is required.</div>
                     </div>
                 </md-input-container>
                 <md-input-container class="md-block">
                     <label>Password</label>
-                    <input required md-no-asterisk name="password" ng-model="formData.password">
+                    <input required md-no-asterisk type="password" name="password" ng-model="formData.password" autocomplete="new-password">
                     <div ng-messages="registerForm.password.$error">
                         <div ng-message="required">Password is required.</div>
                     </div>
@@ -43,7 +43,7 @@
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Phone</label>
-                <input required md-no-asterisk name="phone" ng-model="formData.phone">
+                <input required md-no-asterisk name="phone" ng-model="formData.phone" >
                 <div ng-messages="registerForm.phone.$error">
                     <div ng-message="required">Password is required.</div>
                 </div>

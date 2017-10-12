@@ -11,7 +11,7 @@
         var vm = this;
     }
 
-    function loginController($scope, LoginService, toastService,$rootScope,$state) {
+    function loginController($scope, LoginService, toastService, $rootScope, $state) {
         $scope.formData = {};
         $scope.login = function () {
             if (!$scope.loginForm.$invalid) {
@@ -23,7 +23,7 @@
                             toastService.show("Authenticated Successfully !!");
                             break;
                         case "INVALID_PASSWORD":
-                            $rootScope.IsAuthenticated = false;                            
+                            $rootScope.IsAuthenticated = false;
                             toastService.show("Password entered is invalid. Please try again !!");
                             break;
                         case "NOT_FOUND":
@@ -36,11 +36,23 @@
         }
     }
 
-    function registerController($scope, LoginService) {
+    function registerController($scope, LoginService, toastService, $state, $rootScope) {
         $scope.formData = {};
         $scope.registerUser = function () {
             if (!$scope.registerForm.$invalid) {
-                LoginService.Register($scope.formData);
+                LoginService.Register($scope.formData).then(function (response) {
+                    switch (response.STATUS) {
+                        case "SUCCESS":
+                            toastService.show("Registered successfully !! ID: " + response.Data);
+                            $rootScope.IsAuthenticated = false;
+                            $state.go("login");
+                            break;
+                        case "EXISTS":
+                            toastService.show("User Already exists");
+                            $rootScope.IsAuthenticated = false;                                                                                                               
+                            break;
+                    }
+                });
             }
         }
     }

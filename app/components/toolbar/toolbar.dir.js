@@ -15,11 +15,15 @@
     function toolbarController($scope, $mdSidenav, $rootScope) {
         var vm = this;
         vm.openLeftMenu = openLeftMenu;        
+        vm.logout = logout;        
 
         function openLeftMenu() {
             $mdSidenav('left').toggle();
         };
 
+        function logout() {
+            $rootScope.IsAuthenticated = false;
+        };
     };
 
 })();

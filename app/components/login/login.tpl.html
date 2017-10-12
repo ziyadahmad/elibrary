@@ -11,7 +11,7 @@
             </md-input-container>
             <md-input-container class="md-block">
                 <label>Password</label>
-                <input required md-no-asterisk name="password" ng-model="formData.password">
+                <input required md-no-asterisk name="password" type="password" ng-model="formData.password" >
                 <div ng-messages="loginForm.password.$error">
                     <div ng-message="required">Password is required.</div>                    
                 </div>
