@@ -1,7 +1,7 @@
 <div layout="column" ng-cloak="">
     <section layout="row" flex="">
-        <md-sidenav  class="md-sidenav-left md-whiteframe-z3" md-component-id="left" style="width:200px">
-            <md-toolbar  layout="row">                
+        <md-sidenav class="md-sidenav-left md-whiteframe-z3" md-component-id="left" style="width:200px">
+            <md-toolbar layout="row">
                 <div class="md-toolbar-tools" md-colors="::{background: 'default-blue-grey'}">
                     <h2>
                         <span>eLibrary</span>
@@ -15,27 +15,31 @@
             </md-toolbar>
             <nav>
                 <md-list class="text-left">
-                    <md-list-item  ng-click="toolbar.openLeftMenu()" ui-sref="home">
+                    <md-list-item ng-click="toolbar.openLeftMenu()" ui-sref="home">
                         <md-icon class="material-icons">&#xE871;</md-icon>
                         <p>Home</p>
                     </md-list-item>
+                    <div ng-show="isAuthenticated">
+                        <md-subheader class="md-no-sticky">Admin</md-subheader>
 
-                    <md-subheader class="md-no-sticky">Admin</md-subheader>                    
-
-                    <md-list-item ng-click="toolbar.openLeftMenu()" ui-sref="settings">
-                        <md-icon class="md-default-theme" class="material-icons">&#xE8B9;</md-icon>
-                        <p>Settings</p>
-                    </md-list-item>
-
+                        <md-list-item ng-click="toolbar.openLeftMenu()" ui-sref="users" ng-show="Profile.role==='admin'">
+                            <md-icon class="md-default-theme" class="material-icons">face</md-icon>
+                            <p>Users</p>
+                        </md-list-item>
+                        <md-list-item ng-click="toolbar.openLeftMenu()" ui-sref="books">
+                                <md-icon class="md-default-theme" class="material-icons">book</md-icon>
+                                <p>Books</p>
+                            </md-list-item>
+                    </div>
                 </md-list>
             </nav>
         </md-sidenav>
-        
+
 
         <md-content flex class="md-whiteframe-z1">
             <md-toolbar md-colors="::{background: 'default-blue-grey-800'}">
                 <div class="md-toolbar-tools">
-                    <md-button class="md-icon-button" aria-label="Settings" ng-click="toolbar.openLeftMenu()">
+                    <md-button class="md-icon-button" aria-label="side menu" ng-click="toolbar.openLeftMenu()">
                         <md-icon><i class="material-icons">menu</i></md-icon>
                     </md-button>
                     <h2>
@@ -43,8 +47,8 @@
                     </h2>
 
                     <span flex></span>
-                    <md-button ui-sref="login" aria-label="Login" ng-hide="IsAuthenticated">Login</md-button>                                        
-                    <md-button aria-label="Logout" ng-click="toolbar.logout()" ng-show="IsAuthenticated">Logout</md-button>                    
+                    <md-button ui-sref="login" aria-label="Login" ng-hide="isAuthenticated">Login</md-button>
+                    <md-button aria-label="Logout" ng-click="toolbar.logout()" ng-show="isAuthenticated">Logout</md-button>
                 </div>
             </md-toolbar>
         </md-content>

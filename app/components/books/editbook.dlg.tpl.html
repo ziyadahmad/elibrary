@@ -1,0 +1,58 @@
+<md-dialog aria-label="Edit Book">
+    <form ng-cloak name="editbookForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Book</h2>                
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="column">
+                <div layout="row">
+                    <md-input-container>
+                        <label>ID</label>
+                        <input ng-disabled="true" ng-model="selected._id">
+                    </md-input-container>
+
+
+                    <md-input-container>
+                        <label>Name</label>
+                        <input ng-disabled="true" ng-model="selected.name">
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <md-input-container>
+                        <label>Category</label>
+                        <input ng-model="selected.category">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>ISBN</label>
+                        <input ng-model="selected.isbn">
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <md-input-container>
+                        <label>Author</label>
+                        <input ng-model="selected.author">
+                    </md-input-container>
+                    
+                    <md-input-container>
+                        <md-datepicker ng-model="selected.publishDate" md-placeholder="Enter date"></md-datepicker>
+                    </md-input-container>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="hide()" md-autofocus>
+                Cancel
+            </md-button>
+            <md-button type="submit" ng-click="saveBook()">
+                Save
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

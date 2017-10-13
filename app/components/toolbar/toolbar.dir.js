@@ -12,17 +12,20 @@
         }
     };
 
-    function toolbarController($scope, $mdSidenav, $rootScope) {
+    function toolbarController($scope, $mdSidenav,$rootScope,$state) {
         var vm = this;
         vm.openLeftMenu = openLeftMenu;        
-        vm.logout = logout;        
-
+        vm.logout = logout;          
+        
         function openLeftMenu() {
             $mdSidenav('left').toggle();
         };
 
-        function logout() {
-            $rootScope.IsAuthenticated = false;
+        function logout() {   
+            $rootScope.isAuthenticated = false;    
+            $state.go("home");
+            localStorage.removeItem("isAuthenticated");
+            localStorage.removeItem("Profile");
         };
     };
 

@@ -1,5 +1,5 @@
 var app = angular.module('elibrary',
-    ['ngMaterial', 'ui.router', 'ngMessages', 'ngMdIcons','md.data.table']);
+    ['ngMaterial', 'ui.router', 'ngMessages', 'ngMdIcons', 'md.data.table']);
 
 app.config(function ($urlRouterProvider, $stateProvider, $mdThemingProvider) {
 
@@ -17,10 +17,14 @@ app.config(function ($urlRouterProvider, $stateProvider, $mdThemingProvider) {
             url: '/register',
             templateUrl: 'components/login/register.tpl.html',
             controller: 'registerController'
-        }).state('settings', {
-            url: '/settings',
-            templateUrl: 'components/settings/settings.tpl.html',
-            controller: 'settingsController'
+        }).state('users', {
+            url: '/users',
+            templateUrl: 'components/users/users.tpl.html',
+            controller: 'usersController'
+        }).state('books', {
+            url: '/books',
+            templateUrl: 'components/books/books.tpl.html',
+            controller: 'booksController'
         });
 
     $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();
@@ -28,3 +32,11 @@ app.config(function ($urlRouterProvider, $stateProvider, $mdThemingProvider) {
     $mdThemingProvider.theme('dark-purple').backgroundPalette('deep-purple').dark();
     $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
 });
+
+app.run(function ($rootScope, $location) {
+    $rootScope.$on("$locationChangeStart", function (event, next, current) {
+        $rootScope.isAuthenticated = localStorage.getItem("isAuthenticated");
+        $rootScope.Profile = JSON.parse(localStorage.getItem("Profile"));
+    });    
+});
+

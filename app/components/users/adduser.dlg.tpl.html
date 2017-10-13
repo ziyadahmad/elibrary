@@ -1,8 +1,8 @@
 <md-dialog aria-label="Edit User">
-    <form ng-cloak name="edituserForm">
+    <form ng-cloak name="edituserForm" autocomplete="off">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>User</h2>
+                <h2>Add User</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon aria-label="Close dialog"></md-icon>
@@ -12,16 +12,14 @@
 
         <md-dialog-content>
             <div class="md-dialog-content" layout="column">
-                    <div layout="row">
-                <md-input-container>
-                    <label>User ID</label>
-                    <input ng-disabled="true" ng-model="selected._id">
-                </md-input-container>
-
-                
+                <div layout="row">
                     <md-input-container>
                         <label>User Name</label>
-                        <input ng-disabled="true" ng-model="selected.username">
+                        <input ng-model="selected.username">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Password</label>
+                        <input type="password" ng-model="selected.password">
                     </md-input-container>
                 </div>
 
@@ -40,23 +38,30 @@
                 <div layout="row">
                     <md-input-container>
                         <label>Email</label>
-                        <input ng-model="selected.email">
+                        <input type="email" ng-model="selected.email">
                     </md-input-container>
 
                     <md-input-container>
                         <label>Phone</label>
-                        <input ng-model="selected.phone">
+                        <input type="number" ng-model="selected.phone">
                     </md-input-container>
                 </div>
-                <div layout="row">
-                    <label>Active</label>
-                    <md-switch ng-model="selected.is_active"></md-switch>
+                <div layout="row">              
+
+                    <div layout="row" layout-align="start end">
+                        <md-select ng-model="selected.role" placeholder="Role" class="md-no-underline">
+                            <md-option value="reader">Reader</md-option>
+                            <md-option value="librarian">Librarian</md-option>
+                            <md-option value="admin">Admin</md-option>
+                        </md-select>
+                    </div>
                 </div>
+
             </div>
         </md-dialog-content>
 
-        <md-dialog-actions layout="row">                        
-            <md-button ng-click="hide()" md-autofocus>  
+        <md-dialog-actions layout="row">
+            <md-button ng-click="hide()" md-autofocus>
                 Cancel
             </md-button>
             <md-button type="submit" ng-click="saveUser()">

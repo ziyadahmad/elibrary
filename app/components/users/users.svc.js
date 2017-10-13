@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('elibrary').service('SettingsService', function ($http) {                
+    angular.module('elibrary').service('usersService', function ($http) {                
 
         function Users() {
             var URL = "/api/GetUsers";

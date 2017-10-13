@@ -1,0 +1,31 @@
+<md-dialog aria-label="add book">
+    <form ng-cloak name="assignbookForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Assign Book</h2>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="column">
+                <md-list  ng-cloak>
+                    <md-subheader class="md-no-sticky">Users</md-subheader>
+                    <md-list-item ng-repeat="user in users">
+                        <p> {{ user.username }} </p>
+                        <md-checkbox class="md-secondary" ng-model="user.selected"></md-checkbox>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                </md-list>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="hide()" md-autofocus>
+                Cancel
+            </md-button>
+            <md-button type="submit" ng-click="assignBook()">
+                Save
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

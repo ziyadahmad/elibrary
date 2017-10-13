@@ -1,5 +1,44 @@
-<div layout="column" layout-align="center center" layout-padding layout-margin ng-hide="IsAuthenticated">
+<div layout="column" layout-align="center center" layout-padding layout-margin ng-hide="isAuthenticated">
     <md-card>
-            Welcome to eLibrary. Please Login to continue!!
+        Welcome to eLibrary. Please Login to continue!!
     </md-card>
+</div>
+<md-toolbar ng-show="isAuthenticated">
+    <div class="md-toolbar-tools" md-colors="::{background: 'default-blue-grey'}">
+        <md-autocomplete flex 
+                        md-require-match 
+                        md-clear-button="true"  
+                        md-input-name="searchBook"                                                 
+                        md-autoselect="true" 
+                        md-selected-item="selectedBook" 
+                        md-search-text="searchTextBook" 
+                        md-items="book in querySearch(searchTextBook)"
+                        md-item-text="book.name"                        
+                        md-require-match                         
+                        placeholder="Search books?">
+            <md-icon style="margin-top: 5px"><i class="material-icons md-24">face</i></md-icon>
+            <md-item-template>
+                <span md-highlight-text="searchTextBook" md-highlight-flags="^i">{{book.name}}</span>
+            </md-item-template>
+            <md-not-found>
+                No matches found.
+            </md-not-found>
+        </md-autocomplete>        
+        <span flex></span>
+        <md-button class="md-icon-button" aria-label="add book" ng-click="addBook($event)">
+            <md-icon class="material-icons">add</md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<div layout="row" flex-md layout-padding layout-wrap ng-show="isAuthenticated">
+    <div ng-repeat="book in books | filter:searchTextBook | orderBy:'name'">
+        <md-content class="info-box {{color}}">
+            <div class="count ng-binding">{{book.name}}</div>
+            <md-divider></md-divider>
+            <div class="title ng-binding">ISBN : {{book.isbn}}</div>
+            <div class="title ng-binding">Category/Genre : {{book.category}}</div>
+            <div class="title ng-binding">Author : {{book.author}}</div>
+            <div class="title ng-binding">Published Date : {{book.publishDate | date:'MM/dd/yyyy'}}</div>
+        </md-content>
+    </div>
 </div>
