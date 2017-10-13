@@ -1,5 +1,5 @@
 var app = angular.module('elibrary',
-    ['ngMaterial', 'ui.router', 'ngMessages', 'ngMdIcons']);
+    ['ngMaterial', 'ui.router', 'ngMessages', 'ngMdIcons','md.data.table']);
 
 app.config(function ($urlRouterProvider, $stateProvider, $mdThemingProvider) {
 
@@ -17,6 +17,10 @@ app.config(function ($urlRouterProvider, $stateProvider, $mdThemingProvider) {
             url: '/register',
             templateUrl: 'components/login/register.tpl.html',
             controller: 'registerController'
+        }).state('settings', {
+            url: '/settings',
+            templateUrl: 'components/settings/settings.tpl.html',
+            controller: 'settingsController'
         });
 
     $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();

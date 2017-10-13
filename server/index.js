@@ -22,36 +22,132 @@ nano.db.get('elibrary', function (err, body) {
     } else {
         console.log('database already exists!');
     }
-});
 
-/*global emit*/
- db.insert(
-  { "views": 
-    { "vw_users": 
-      { "map": function(doc) { 
-          emit(doc._id,[doc.username, doc.password] ); 
-        } 
-      } 
-    }
-  }, '_design/designUsers', function (error, response) {
-    console.log("yay");
-  });
+    /*global emit*/
+    db.insert(
+        {
+            "views":
+            {
+                "vw_credentials":
+                {
+                    "map": function (doc) {
+                        if (doc.doc_type == "Users" && doc.is_active) {
+                            emit(doc.username, {
+                                username: doc.username,
+                                password: doc.password
+                            });
+                        }
+                    }
+                },
+                "vw_users":
+                {
+                    "map": function (doc) {
+                        if (doc.doc_type == "Users" ) {
+                            emit(doc.username, {
+                                _id: doc._id,
+                                username: doc.username,
+                                password: doc.password,
+                                fname: doc.fname,
+                                lname: doc.lname,
+                                email: doc.email,
+                                phone: doc.phone,
+                                is_active:doc.is_active
+                            });
+                        }
+                    }
+                }
+            }
+        }, '_design/designUsers', function (error, response) {
+            console.log("yay");
+        });
+});
 
 app.get('/', function (req, res) {
     res.sendFile('index.html');
 });
 
+app.get('/api/UpdateUser', function (req, res) {
+    var data = req.query;
+    data["doc_type"]= "Users";
+    data["is_active"]= true;    
+
+    var response;
+
+    db.get(data._id, function (err, body) {
+        if (err) {
+            response = JSON.stringify({ STATUS: "FAILED", MESSAGE: "User not found to udpate " });
+            res.send(200, response);
+        }
+
+        updaterev =body._rev;
+        var param = {};        
+        data["_rev"] =updaterev;
+        db.insert(data,data._id, function(err, body) {
+            if (!err)
+            {                
+                response = JSON.stringify({ STATUS: "SUCCESS", MESSAGE: body._id + " Updated Successfully !! " });
+                res.send(200, response);                
+            }
+            else
+            {
+                response = JSON.stringify({ STATUS: "FAILED", MESSAGE: "Updated Failed !! " });
+                res.send(200, response);                
+            }
+        });
+    });
+});
+
+app.get('/api/DeleteUser/:id', function (req, res) {
+
+    var userid = req.params.id;
+    var response;
+
+    db.get(userid, function (err, body, header) {
+        if (err) {
+            response = JSON.stringify({ STATUS: "FAILED", MESSAGE: "User not found to delete " });
+            return res.send(200, response);
+        }
+
+        updaterev =body._rev;
+
+        var param = {};        
+        body["_rev"] =updaterev;
+        body["is_active"] = false;
+        db.insert(body,body._id, function(err, body) {
+            if (!err)
+            {                
+                response = JSON.stringify({ STATUS: "SUCCESS", MESSAGE: body._id + " Updated Successfully !! " });
+                res.send(200, response);                
+            }
+            else
+            {
+                response = JSON.stringify({ STATUS: "FAILED", MESSAGE: "Updated Failed !! " });
+                res.send(200, response);                
+            }
+        });
+
+        // db.destroy(body._id, body._rev, function (err, body, header) {
+        //     if (err) {
+        //         response = JSON.stringify({ STATUS: "FAILED", MESSAGE: "unable to delete " + body._id });
+        //         return res.send(200, response);
+        //     }
+        //     response = { STATUS: "SUCCESS", MESSAGE: "Deleted " + body.id };
+        //     return res.send(200, response);
+        // });
+    });
+});
+
 app.get('/api/loginuser', function (req, res) {
     var response;
 
-    db.view('designUsers', 'vw_users', {
+    db.view('designUsers', 'vw_credentials', {
         'key': req.query.username,
         'include_docs': false
     }, function (err, body) {
         if (!err) {
             body.rows.forEach(function (doc) {
                 if (doc.value.password == req.query.password) {
-                    response = { "STATUS": "SUCCESS", "Data": doc.value.username }                    
+                    response = { "STATUS": "SUCCESS", "Data": doc.value.username }
                 }
                 else {
                     response = { "STATUS": "INVALID_PASSWORD", "Data": "" };
@@ -62,8 +158,21 @@ app.get('/api/loginuser', function (req, res) {
                 response = { "STATUS": "NOT_FOUND", "Data": "" };
             }
         }
-        
+
         res.end(JSON.stringify(response));
+    });
+});
+
+app.get('/api/GetUsers', function (req, res) {
+    db.view('designUsers', 'vw_users', function (err, body) {
+        var data = [];
+        if (!err) {
+            body.rows.forEach(function (doc) {
+                data.push(doc.value);
+            });
+
+            res.end(JSON.stringify(data));
+        }
     });
 });
 
@@ -71,31 +180,33 @@ app.post('/api/registeruser', function (req, res) {
     var data = req.body;
     data["doc_type"] = "Users";
     data["is_active"] = true;
+    data["role"] ="Reader";
+
     db.view('designUsers', 'vw_users', {
     }, function (err, body) {
         if (!err) {
             var response;
 
-            for (var i = 0, len = body.rows.length; i < len; i++) {                
-                
-                if(body.rows[i].key===data.username){
+            for (var i = 0, len = body.rows.length; i < len; i++) {
+
+                if (body.rows[i].key === data.username) {
                     response = ({ "STATUS": "EXISTS", "Data": "" });
                     res.end(JSON.stringify(response));
                     return;
                 }
             }
-            
+
             var userID = data.username + "-" + pad(body.rows.length + 1, 5);
 
-                db.insert(data, userID, function (err, body) {
-                    if (!err && body.ok) {
-                        response = ({ "STATUS": "SUCCESS", "Data": body.id });
-                    } else {
-                        response = ({ "STATUS": "FAILED", "Data": "" });
-                    }
+            db.insert(data, userID, function (err, body) {
+                if (!err && body.ok) {
+                    response = ({ "STATUS": "SUCCESS", "Data": body.id });
+                } else {
+                    response = ({ "STATUS": "FAILED", "Data": "" });
+                }
 
-                    res.end(JSON.stringify(response));
-                });
+                res.end(JSON.stringify(response));
+            });
         }
     });
 });

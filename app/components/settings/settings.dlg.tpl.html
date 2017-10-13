@@ -1,0 +1,67 @@
+<md-dialog aria-label="Edit User">
+    <form ng-cloak name="edituserForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>User</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="column">
+                    <div layout="row">
+                <md-input-container>
+                    <label>User ID</label>
+                    <input ng-disabled="true" ng-model="selected._id">
+                </md-input-container>
+
+                
+                    <md-input-container>
+                        <label>User Name</label>
+                        <input ng-disabled="true" ng-model="selected.username">
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <md-input-container>
+                        <label>First Name</label>
+                        <input ng-model="selected.fname">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Last Name</label>
+                        <input ng-model="selected.lname">
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <md-input-container>
+                        <label>Email</label>
+                        <input ng-model="selected.email">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label>Phone</label>
+                        <input ng-model="selected.phone">
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <label>Active</label>
+                    <md-switch ng-model="selected.is_active"></md-switch>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">                        
+            <md-button ng-click="hide()" md-autofocus>  
+                Cancel
+            </md-button>
+            <md-button type="submit" ng-click="saveUser()">
+                Save
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
