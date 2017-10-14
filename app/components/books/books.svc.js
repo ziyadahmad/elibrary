@@ -65,6 +65,15 @@
             return promise;
         }    
 
+        function AddComment(data) {
+            var URL = "/api/AddComment";
+            var promise = $http.post(URL, data).then(function (response) {
+                return response.data;
+            });
+
+            return promise;
+        }    
+        
         function updateBook(doc) {
             var URL = "/api/UpdateBook";
 
@@ -86,7 +95,8 @@
             updateBook: updateBook,
             AddBook: AddBook,
             AssignUser:AssignUser,
-            AddRating:AddRating
+            AddRating:AddRating,
+            AddComment:AddComment
         }
     });
 })();

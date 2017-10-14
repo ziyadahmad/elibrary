@@ -7,7 +7,7 @@
         .controller('loginController', loginController)
         .controller('registerController', registerController);
 
-    function homeController($scope, booksService, $mdDialog, $q, $timeout,$rootScope,toastService) {
+    function homeController($scope, booksService, $mdDialog, $q, $timeout, $rootScope, toastService) {
         $scope.querySearch = querySearch;
 
         function querySearch(query) {
@@ -43,11 +43,27 @@
                 });
         };
 
+        $scope.showComments = function (book) {
+            $mdDialog.show({
+                controller: CommentsController,
+                templateUrl: '/components/books/bookcomments.dlg.tpl.html',
+                parent: angular.element(document.body),
+                locals: {
+                    book: book
+                },
+                targetEvent: event,
+                clickOutsideToClose: true,
+                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            })
+                .then(function () {
+                    $scope.getBooks();
+                });
+        }
 
-        $scope.onRating = function(rating,book){
-            var param = {profile:$rootScope.Profile,bookID:book,rating:rating};
-            booksService.AddRating(param).then(function (res) {                
-                toastService.show("You rated " +rating +" for " + book.name);
+        $scope.onRating = function (rating, book) {
+            var param = { profile: $rootScope.Profile, bookID: book, rating: rating };
+            booksService.AddRating(param).then(function (res) {
+                toastService.show("You rated " + rating + " for " + book.name);
             });
         }
 
@@ -119,4 +135,20 @@
             }
         }
     }
+
+    function CommentsController($scope, toastService, book, booksService, $rootScope, $mdDialog) {
+        $scope.book = book;
+        
+        $scope.hide = function () {
+            $mdDialog.hide();
+        }        
+
+        $scope.AddComment = function () {
+            var param = { profile: $rootScope.Profile, bookID: book, comment: $scope.usercomment };
+            booksService.AddComment(param).then(function (res) {
+                toastService.show("Your comments are submitted");
+            });
+        }
+    }
+
 })();

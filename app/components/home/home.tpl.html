@@ -32,6 +32,7 @@
                 <div class="title">Category/Genre : {{book.category}}</div>
                 <div class="title">Author : {{book.author}}</div>
                 <div class="title">Published Date : {{book.publishDate | date:'MM/dd/yyyy'}}</div>
+                <md-button class="desc md-warn md-raised" ng-click="showComments(book)">Comments</md-button>
             </div>
             <div>
                 <jk-rating-stars max-rating="5" rating="book.userrating" on-rating="onRating(rating,book)"></jk-rating-stars>

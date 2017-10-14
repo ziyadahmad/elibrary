@@ -71,7 +71,8 @@ nano.db.get('elibrary', function (err, body) {
                                 author: doc.author,
                                 publishDate: doc.publishDate,
                                 users: doc.users,
-                                rating: doc.rating
+                                rating: doc.rating,
+                                comments:doc.comments
                             });
                         }
                     }
@@ -342,6 +343,44 @@ app.post('/api/AddRating', function (req, res) {
         });
     });
 });
+
+app.post('/api/AddComment', function (req, res) {
+    var data = req.body;
+    db.get(data.bookID._id, function (err, body, header) {
+        if (err) {
+            response = JSON.stringify({ STATUS: "FAILED", MESSAGE: "User not found to delete " });
+            return res.send(200, response);
+        }
+
+        updaterev = body._rev;
+        body["_rev"] = updaterev;
+
+        if (body["comments"] === undefined) { body["comments"] = [] };
+
+        if (body["comments"].length > 0 && body["comments"].find(x => x.user === data.profile.id).user != undefined) {
+            for (var i = 0, iLen = body["comments"].length; i < iLen; i++) {
+
+                if (body["comments"][i].user == data.profile.id) {
+                    body["comments"][i].comment = data.comment;
+                }
+            }
+        } else {
+            body["comments"].push({ user: data.profile.id, comment: data.comment });
+        }
+
+        db.insert(body, body._id, function (err, body) {
+            if (!err) {
+                response = JSON.stringify({ STATUS: "SUCCESS" });
+                res.send(200, response);
+            }
+            else {
+                response = JSON.stringify({ STATUS: "FAILED" });
+                res.send(200, response);
+            }
+        });
+    });
+});
+
 
 app.post('/api/addbook', function (req, res) {
     var data = req.body;
