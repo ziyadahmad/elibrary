@@ -1,5 +1,5 @@
 <div layout="column" layout-align="center stretch">
-    <md-toolbar class="md-table-toolbar md-primary" ng-show="isAuthenticated">
+    <md-toolbar class="md-table-toolbar md-primary" ng-show="isAuthenticated && (Profile.role==='admin' || profile.role==='librarian')" >
         <div class="md-toolbar-tools">
             <div><span>Books</span></div>
             <span flex></span>
@@ -39,6 +39,7 @@
                     <td md-cell>{{book.isbn}}</td>
                     <td md-cell>{{book.author}}</td>
                     <td md-cell>{{book.publishDate | date:'mediumDate'}}</td>
+                    
                 </tr>
             </tbody>
         </table>

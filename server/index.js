@@ -70,7 +70,8 @@ nano.db.get('elibrary', function (err, body) {
                                 category: doc.category,
                                 author: doc.author,
                                 publishDate: doc.publishDate,
-                                users: doc.users
+                                users: doc.users,
+                                rating: doc.rating
                             });
                         }
                     }
@@ -284,11 +285,13 @@ app.post('/api/GetBooks', function (req, res) {
                 if (data.role != 'admin') {
                     doc.value.users.forEach(function (value) {
                         if (data.id === value) {
+                            //var ratingValue = doc.value.rating
                             filterData.push(doc.value);
                         }
                     });
-                }else
-                {
+                } else {
+                    var userrating = doc.value.rating.find(x => x.user === data.id).rating; 
+                    doc.value["userrating"] = userrating;
                     filterData.push(doc.value);
                 }
             });
@@ -301,6 +304,43 @@ app.post('/api/GetBooks', function (req, res) {
 app.get('/api/GetCategories', function (req, res) {
     var categories = require('./master/categories.json');
     res.end(JSON.stringify(categories.data));
+});
+
+app.post('/api/AddRating', function (req, res) {
+    var data = req.body;
+    db.get(data.bookID._id, function (err, body, header) {
+        if (err) {
+            response = JSON.stringify({ STATUS: "FAILED", MESSAGE: "User not found to delete " });
+            return res.send(200, response);
+        }
+
+        updaterev = body._rev;
+        body["_rev"] = updaterev;
+
+        if (body["rating"] === undefined) { body["rating"] = [] };
+
+        if (body["rating"].length > 0 && body["rating"].find(x => x.user === data.profile.id).user != undefined) {
+            for (var i = 0, iLen = body["rating"].length; i < iLen; i++) {
+
+                if (body["rating"][i].user == data.profile.id) {
+                    body["rating"][i].rating = data.rating;
+                }
+            }
+        } else {
+            body["rating"].push({ user: data.profile.id, rating: data.rating });
+        }
+
+        db.insert(body, body._id, function (err, body) {
+            if (!err) {
+                response = JSON.stringify({ STATUS: "SUCCESS" });
+                res.send(200, response);
+            }
+            else {
+                response = JSON.stringify({ STATUS: "FAILED" });
+                res.send(200, response);
+            }
+        });
+    });
 });
 
 app.post('/api/addbook', function (req, res) {

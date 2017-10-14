@@ -158,7 +158,7 @@
          var param = {users:selectedUsers,bookID:$scope.selected[0]._id};
          booksService.AssignUser(param).then(function (res) {
            $scope.hide();
-           toastService.show("Added Successfully!!")
+           toastService.show("Assigned Successfully!!")
          });
        }
     };

@@ -7,7 +7,7 @@
         .controller('loginController', loginController)
         .controller('registerController', registerController);
 
-    function homeController($scope, booksService, $mdDialog, $q, $timeout) {
+    function homeController($scope, booksService, $mdDialog, $q, $timeout,$rootScope,toastService) {
         $scope.querySearch = querySearch;
 
         function querySearch(query) {
@@ -42,6 +42,14 @@
                     $scope.getBooks();
                 });
         };
+
+
+        $scope.onRating = function(rating,book){
+            var param = {profile:$rootScope.Profile,bookID:book,rating:rating};
+            booksService.AddRating(param).then(function (res) {                
+                toastService.show("You rated " +rating +" for " + book.name);
+            });
+        }
 
         $scope.getBooks();
     }

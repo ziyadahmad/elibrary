@@ -1,5 +1,5 @@
 var app = angular.module('elibrary',
-    ['ngMaterial', 'ui.router', 'ngMessages', 'ngMdIcons', 'md.data.table']);
+    ['ngMaterial', 'ui.router', 'ngMessages', 'ngMdIcons', 'md.data.table','jkAngularRatingStars']);
 
 app.config(function ($urlRouterProvider, $stateProvider, $mdThemingProvider) {
 
